@@ -45,6 +45,45 @@ const logIn = async (req, res) => {
   }
 };
 
+const updateUser = async (req, res) => {
+  const { name, mobile, email } = req.body;
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    user.name = name || user.name;
+    user.mobile = mobile || user.mobile;
+    user.email = email || user.email;
+    // const token = user.getSignedToken();
+
+    await user.save();
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+const getUsers = async (req, res) => {
+  try {
+    const users = await User.find();
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+const searchUser = async (req, res) => {
+  const { name } = req.query;
+  try {
+    const users = await User.find({ name: new RegExp(name, "i") });
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 const sendToken = (user, statusCode, res) => {
   const token = user.getSignedToken();
   res.status(statusCode).json({ success: true, token, user: user });
@@ -52,4 +91,7 @@ const sendToken = (user, statusCode, res) => {
 module.exports = {
   logIn,
   signUp,
+  updateUser,
+  getUsers,
+  searchUser,
 };

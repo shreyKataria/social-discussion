@@ -12,18 +12,6 @@ connectDB();
 // middleware
 app.use(express.json());
 
-// test
-// app.use("/", (req, res) => {
-//   try {
-//     const { name } = req.body;
-//     if (name) {
-//       res.status(200).json(`hello ${name}`);
-//     }
-//   } catch (error) {
-//     console.log("error", error.message);
-//   }
-// });
-
 // routes
 app.use("/api/users", userRouter);
 
