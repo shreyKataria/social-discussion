@@ -5,6 +5,7 @@ const {
   updateUser,
   getUsers,
   searchUser,
+  deleteUser,
 } = require("../controller/userController");
 const { protect } = require("../middlewares/authMiddleware");
 
@@ -15,5 +16,6 @@ router.post("/login", logIn);
 router.put("/update/:id", protect, updateUser);
 router.get("/", getUsers);
 router.get("/search", searchUser);
+router.delete("/delete/:id", protect, deleteUser);
 
 module.exports = router;
