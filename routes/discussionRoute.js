@@ -7,6 +7,7 @@ const {
   deleteDiscussion,
   getDiscussionsByTag,
   getDiscussionsByText,
+  likeDiscussion,
 } = require("../controller/discussionController");
 const router = express.Router();
 
@@ -33,5 +34,6 @@ router.put("/update/:id", protect, updateDiscussion);
 router.delete("/delete/:id", protect, deleteDiscussion);
 router.get("/tags/:tag", getDiscussionsByTag);
 router.get("/search", getDiscussionsByText);
+router.post("/like/:discussionId", protect, likeDiscussion);
 
 module.exports = router;

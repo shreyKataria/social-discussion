@@ -99,6 +99,33 @@ const deleteUser = async (req, res) => {
   }
 };
 
+// POST : http://localhost:8000/api/users/follow/:id
+const followUser = async (req, res) => {
+  try {
+    const userToFollow = await User.findById(req.params.userId);
+    if (!userToFollow) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const currentUser = await User.findById(req.user._id);
+    if (currentUser.following.includes(req.params.userId)) {
+      return res
+        .status(400)
+        .json({ message: "You are already following this user" });
+    }
+
+    currentUser.following.push(req.params.userId);
+    await currentUser.save();
+
+    userToFollow.followers.push(req.user._id);
+    await userToFollow.save();
+
+    res.status(200).json({ message: "User followed successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 // token utility function
 const sendToken = (user, statusCode, res) => {
   const token = user.getSignedToken();
@@ -111,4 +138,5 @@ module.exports = {
   getUsers,
   searchUser,
   deleteUser,
+  followUser,
 };

@@ -1,4 +1,5 @@
 const Discussion = require("../model/discussionModel");
+const User = require("../model/userModel");
 
 // POST : http://localhost:8000/api/discussions/upload
 const createDiscussion = async (req, res) => {
@@ -81,10 +82,33 @@ const getDiscussionsByText = async (req, res) => {
   }
 };
 
+// POST : http://localhost:8000/api/discussions
+const likeDiscussion = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    if (user.likedDiscussions.includes(req.params.discussionId)) {
+      return res
+        .status(400)
+        .json({ message: "You have already liked this discussion" });
+    }
+
+    user.likedDiscussions.push(req.params.discussionId);
+    await user.save();
+    res.status(200).json({ message: "Discussion liked successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 module.exports = {
   createDiscussion,
   updateDiscussion,
   deleteDiscussion,
   getDiscussionsByTag,
   getDiscussionsByText,
+  likeDiscussion,
 };
