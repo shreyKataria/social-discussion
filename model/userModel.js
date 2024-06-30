@@ -8,8 +8,12 @@ const UserSchema = new Schema({
   name: { type: String, required: true },
   mobile: { type: String, unique: true, required: true },
   email: { type: String, unique: true, required: true },
-  password: { type: String, required: true },
+  password: { type: String, required: true, unique: true },
   followers: [{ type: Schema.Types.ObjectId, ref: "User" }],
+  following: [{ type: Schema.Types.ObjectId, ref: "User" }],
+  likedComments: [{ type: Schema.Types.ObjectId, ref: "Comment" }],
+  likedDiscussions: [{ type: Schema.Types.ObjectId, ref: "Discussion" }],
+  createdOn: { type: Date, default: Date.now },
 });
 
 UserSchema.pre("save", async function (next) {
