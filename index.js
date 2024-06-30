@@ -3,6 +3,7 @@ const express = require("express");
 const { connectDB } = require("./db/db");
 const UserAuth = require("./routes/userRoute");
 const Discussion = require("./routes/discussionRoute");
+const UserActivity = require("./routes/activityRoute");
 const app = express();
 const path = require("path");
 const fs = require("fs");
@@ -24,6 +25,7 @@ if (!fs.existsSync(uploadDir)) {
 // routes
 app.use("/api/users", UserAuth);
 app.use("/api/discussions", Discussion);
+app.use("/api/activity", UserActivity);
 
 // server
 app.listen(PORT, () => {
