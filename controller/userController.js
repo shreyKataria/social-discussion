@@ -1,8 +1,6 @@
-const express = require("express");
 const User = require("../model/userModel");
 
-const router = express.Router();
-
+// POST http://localhost:8000/api/users/signup
 const signUp = async (req, res) => {
   const { name, mobile, email, password } = req.body;
   try {
@@ -11,7 +9,6 @@ const signUp = async (req, res) => {
       return res.status(400).json({ message: "User already exists" });
     }
 
-    // const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = new User({
       name,
       mobile,
@@ -26,6 +23,7 @@ const signUp = async (req, res) => {
   }
 };
 
+// POST : http://localhost:8000/api/users/login
 const logIn = async (req, res) => {
   const { email, password } = req.body;
   try {
@@ -44,6 +42,7 @@ const logIn = async (req, res) => {
   }
 };
 
+// PUT : http://localhost:8000/api/users/update/:id
 const updateUser = async (req, res) => {
   const { name, mobile, email } = req.body;
   try {
@@ -64,6 +63,7 @@ const updateUser = async (req, res) => {
   }
 };
 
+// GET : http://localhost:8000/api/users/
 const getUsers = async (req, res) => {
   try {
     const users = await User.find();
@@ -73,6 +73,7 @@ const getUsers = async (req, res) => {
   }
 };
 
+// GET http://localhost:8000/api/users/search
 const searchUser = async (req, res) => {
   const { name } = req.query;
   try {
@@ -83,6 +84,7 @@ const searchUser = async (req, res) => {
   }
 };
 
+// DELETE : http://localhost:8000/api/users/delete/:id
 const deleteUser = async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
@@ -97,6 +99,7 @@ const deleteUser = async (req, res) => {
   }
 };
 
+// token utility function
 const sendToken = (user, statusCode, res) => {
   const token = user.getSignedToken();
   res.status(statusCode).json({ success: true, token, user: user });

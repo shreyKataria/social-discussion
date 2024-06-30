@@ -11,6 +11,7 @@ const { protect } = require("../middlewares/authMiddleware");
 
 const router = express.Router();
 
+// routes
 router.post("/signup", signUp);
 router.post("/login", logIn);
 router.put("/update/:id", protect, updateUser);
