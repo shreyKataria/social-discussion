@@ -63,7 +63,7 @@ cd social-discussion
 
 3. Set up environment variables
 
-```json
+```console
 PORT=8000
 MONGODB_URI=your_mongodb_connection_string
 JWT_SECRET=your_jwt_secret
